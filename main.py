@@ -81,7 +81,7 @@ def main(page: ft.Page):
     
     todo = ToDo()
     page.add(todo)
-    
+    page.client_storage.set("key", "value")
     # page.update()
     
 ft.app(target=main)
