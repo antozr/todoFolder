@@ -6,10 +6,11 @@ class Task(ft.UserControl):
         super().__init__()
         self.input = input_text
         self.remove_task = remove_task
+        
     
     def build(self):
         self.task_cb = ft.Checkbox(label=self.input, expand=True)
-        self.edit_tf = ft.TextField(value=self.input, expand=True)
+        self.edit_tf = ft.TextField(value=self.input, on_submit=self.save_clicked, expand=True)
         
         self.task_view = ft.Row(
             visible=True,
@@ -23,7 +24,10 @@ class Task(ft.UserControl):
             visible=False,
             controls=[
                 self.edit_tf,
-                ft.IconButton(icon=ft.icons.CHECK, on_click=self.save_clicked)
+                ft.IconButton(icon=ft.icons.CHECK, on_click=self.save_clicked ),
+                
+                
+                
             ]
         )
         return ft.Column(controls=[self.task_view, self.edit_view])
@@ -42,8 +46,10 @@ class Task(ft.UserControl):
         self.edit_view.visible = False
         self.update()
     
+   
 
 class ToDo(ft.UserControl):
+    
     def build(self):
         self.input = ft.TextField(hint_text='Alors on rajoute quoi ? ', expand=True)
         self.tasks = ft.Column()
@@ -68,6 +74,7 @@ class ToDo(ft.UserControl):
             task = Task(self.input.value, self.remove_task)
             self.tasks.controls.append(task)
             self.input.value = ''
+            
             self.update()
         
     def remove_task(self, task):
@@ -77,11 +84,14 @@ class ToDo(ft.UserControl):
 def main(page: ft.Page):
     page.window_height = 600
     page.window_width = 400
-    page.title = 'ToDo'
+    page.title = page.client_storage.get("nameTitle")
     
     todo = ToDo()
     page.add(todo)
-    page.client_storage.set("key", "value")
+    
+    i = 0
+    page.client_storage.set("nameTitle", "Todo's  Main app")
+    
     # page.update()
     
 ft.app(target=main)
